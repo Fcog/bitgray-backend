@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
  
 use App\Recharge;
+use App\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
  
@@ -28,6 +29,12 @@ class RechargeController extends Controller{
     public function saveRecharge(Request $request){
  
         $recharge = Recharge::create($request->all());
+
+        $account = Account::find($request->input('accounts_id'));
+
+        $account->balance += $request->input('amount');
+
+        $account->save();
  
         return response()->json($recharge);
  

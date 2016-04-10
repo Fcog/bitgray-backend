@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
  
 use App\Usage;
+use App\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
  
@@ -28,6 +29,12 @@ class UsageController extends Controller{
     public function saveUsage(Request $request){
  
         $usage = Usage::create($request->all());
+
+        $account = Account::find($request->input('accounts_id'));
+
+        $account->balance -= $request->input('amount');
+
+        $account->save();        
  
         return response()->json($usage);
  
